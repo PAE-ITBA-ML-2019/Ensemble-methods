@@ -105,7 +105,7 @@ def get_polynimial_set(X, degree = 12, bias = True):
     else:
         return X_mat[:,1:]
 
-def plot_boundaries(X_train, y_train, score=None, probability_func=None, degree = None, n_colors = 100, mesh_res = 200, ax = None, bound_line=True):
+def plot_boundaries(X_train, y_train, score=None, probability_func=None, degree = None, n_colors = 100, mesh_res = 200, ax = None, bound_line=True, sample_weights=None):
     X = X_train #np.vstack((X_test, X_train))
     margin_x = (X[:, 0].max() - X[:, 0].min())*0.05
     margin_y = (X[:, 1].max() - X[:, 1].min())*0.05
@@ -152,8 +152,10 @@ def plot_boundaries(X_train, y_train, score=None, probability_func=None, degree 
                 size=40, horizontalalignment='right')
 
     # Plot also the training points
+    if sample_weights is None:
+        sample_weights = np.array([1/len(y_train)]*len(y_train))
     ax.scatter(X_train[:, 0], X_train[:, 1], c=y_train, cmap=cm_bright,
-               edgecolors='k', s=100, marker='o')
+               edgecolors='k', s=1000*sample_weights, marker='o')
     
 
 def fit_and_get_regions(X_train, y_train, X_test, y_test, degree = 2, lambd = 0, plot_it = True, print_it = False, mesh_res=200, return_model=False):
